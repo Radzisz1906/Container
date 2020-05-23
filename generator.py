@@ -18,6 +18,8 @@ for i in range(conteiners):
     plik.write(str(str(i + 1)))
     plik.write(" ")
     plik.write(str(random.randint(1, max_conteiner_value)))
+    plik.write(" ")
+    plik.write(str(random.randint(1, 100)))
     plik.write("\n")
 plik.close()
 
@@ -39,5 +41,7 @@ for i in range(conteiners):
     plik.write(str(str(i + 1)))
     plik.write(" ")
     plik.write(str(random.randint(1, max_conteiner_value)))
+    plik.write(" ")
+    plik.write(str(random.randint(1, 100)))
     plik.write("\n")
 plik.close()
