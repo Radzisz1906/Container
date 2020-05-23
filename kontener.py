@@ -3,10 +3,10 @@ from collections import defaultdict
 
 class plecak():
 
-    def __init__(self, lad, kont):
-        self.kontenery = []
-        self.ladownosc = lad
-        self.ilosc = kont
+    def __init__(self, matrix):
+        self.kontenery = matrix[1:]
+        self.ladownosc = matrix[0][0]
+        self.ilosc = matrix[0][1]
 
     def zach(self):
         d = defaultdict(list)
@@ -27,12 +27,9 @@ dane = []
 plik = open("statkiA.txt")
 i = 0
 for line in plik:
-    if i == 0:
-        p = plecak(int(line.split()[0]), int(line.split()[1]))
-        i += 1
-    else:
-        tmp = line.split()
-        tmp = list(map(int, tmp))
-        p.kontenery.append(tmp)
+    tmp = line.split()
+    tmp = list(map(int, tmp))
+    dane.append(tmp)
+p = plecak(dane)
 plik.close()
 p.zach()
