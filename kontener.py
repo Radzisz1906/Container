@@ -1,6 +1,7 @@
 from collections import defaultdict
-import generator
 from generator import gen
+import timeit
+import math
 
 
 class plecak():
@@ -22,10 +23,11 @@ class plecak():
                 sor.append(d[i][0])
                 su += d[i][1]
                 war += d[i][2]
-            else:
-                break
-        print(sor)
-        print(war)
+            # else:
+                # break
+        # print(sor)
+        # print(war)
+        return war
 
 
 def dynamic(waga, wartosc, pojemnosc, l_kontenerow):
@@ -38,6 +40,7 @@ def dynamic(waga, wartosc, pojemnosc, l_kontenerow):
             else:
                 tabela[i][j] = max(tabela[i - 1][j], tabela[i - 1]
                                    [j - waga[i - 1]] + wartosc[i - 1])
+    #print(tabela[l_kontenerow][pojemnosc], end=";")
     return tabela[l_kontenerow][pojemnosc]
 
 
@@ -48,23 +51,34 @@ if wyb == 1:
     ladownosc = int(input())
     print("Ilosc kontenerow:")
     ilosc_kont = int(input())
-    gen(ilosc_kont, ladownosc)
-dane = []
-waga = []
-wartosc = []
-plik = open("statkiA.txt")
-i = 0
-for line in plik:
-    tmp = line.split()
-    tmp = list(map(int, tmp))
-    dane.append(tmp)
-    if i > 0:
-        waga.append(tmp[1])
-        wartosc.append(tmp[2])
-    i += 1
-plik.close()
-p = plecak(dane)
-print("Dynamiczne:")
-print(dynamic(waga, wartosc, p.ladownosc, p.ilosc))
-print("Zachłanne:")
-p.zach()
+
+sumy_d = [0] * 15
+sumy_z = [0] * 15
+for i in range(10):
+    for z in range(1, 16):
+        gen(ilosc_kont * z, ladownosc)
+        dane = []
+        waga = []
+        wartosc = []
+        plik = open("statkiA.txt")
+        i = 0
+        for line in plik:
+            tmp = line.split()
+            tmp = list(map(int, tmp))
+            dane.append(tmp)
+            if i > 0:
+                waga.append(tmp[1])
+                wartosc.append(tmp[2])
+            i += 1
+        plik.close()
+        p = plecak(dane)
+        print(timeit.timeit(lambda: dynamic(
+            waga, wartosc, p.ladownosc, p.ilosc), number=1), end=";")
+        print(timeit.timeit(lambda: p.zach(), number=1))
+        # print(math.floor())
+        dyn = dynamic(waga, wartosc, p.ladownosc, p.ilosc)
+        zach = p.zach()
+        sumy_d[z - 1] += dyn
+        sumy_z[z - 1] += zach
+for i in range(15):
+    print(sumy_d[i] / 10, ";", sumy_z[i] / 10)
